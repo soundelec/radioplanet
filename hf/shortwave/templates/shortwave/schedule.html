@@ -1,0 +1,87 @@
+{% extends 'shortwave/base.html' %}
+{% load static %}
+{% block title %}Schedule for {{station.0.broadcaster}} in {{station.0.lang}} · Radio Planet{% endblock %}
+{% block pagetitle %}Schedule for {{station.0.broadcaster}} in {{station.0.lang}}{% endblock %}
+{% block content %}
+<div class="col">
+  <h2>Search results</h2>
+  {% if station.0.freq %}
+  <table class="frequencies">
+    <tbody>
+      <tr class="tableheader">
+        <td class="tableheader">Freq</td>
+        <td class="tableheader">Times (UTC)</td>
+        <td class="tableheader">Days</td>
+        <td class="tableheader">Broadcaster</td>
+        <td class="tableheader">Language</td>
+        <td class="tableheader">Site</td>
+        <td class="tableheader">&nbsp;</td>
+        <td class="tableheader">Power</td>
+        <td class="tableheader">&nbsp;</td>
+      </tr>
+      {% for station in station %}
+      <tr class="stationrow">
+        <td class="stationrow">{{station.freq}}</td>
+        <td class="stationrow">{{station.timeon}}-{{station.timeoff}}</td>
+        <td class="stationrow">{% if station.mon %}m{% else %}.{% endif %}{% if station.tue %}t{% else %}.{% endif %}{% if station.wed %}w{% else %}.{% endif %}{% if station.thu %}t{% else %}.{% endif %}{% if station.fri %}f{% else %}.{% endif %}{% if station.sat %}s{% else %}.{% endif %}{% if station.sun %}s{% else %}.{% endif %}</td>
+        <td class="stationrow">{{station.broadcaster}}</td>
+        <td class="stationrow">{{station.lang}}</td>
+        <td class="stationrow">{{station.site}}</td>
+        <td class="stationrow" title="{{station.site.countryname}}">{{station.site.iso}} <img src="{% static 'img/flags_iso/'%}{{station.site.iso}}.png"></td>
+        <td class="stationrow">{{station.power}}</td>
+        <td class="stationrow"><a href="/detail/{{station.uuid}}">info <i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>No stations were found for your search. Please try a different search. If you think this is an error, please <a href="mailto:admin@radiopla.net">contact me</a>.</p>
+  {% endif %}
+</div>
+</div>
+<div class="row">
+<div class="col">
+  <p></p>
+  <div id="txmap" class="worldmap">
+    <script>
+
+    // get list of transmitters in array
+    var transmitters = [
+    {% for station in station %}
+        ["<strong>{{station.site}}</strong><br />{{station.broadcaster}} ({{station.freq}} kHz)",{{station.site.lat}},{{station.site.lon}}],
+    {% endfor %}
+    ]
+
+    // define the map itself
+    var map = L.map('txmap').setView([30,0], 2); // centre of Europe (ish!)
+    mapLink =
+    '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+    L.tileLayer(
+    'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaW9uYWsiLCJhIjoiY2o1NzJsZHhuMXM3dzJ4cWxiMnBteWkxaSJ9.nJkz62TdDvWDv8CBQboHxg', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 10,
+    id: 'mapbox.streets'
+    }).addTo(map);
+
+    // add markers for transmitters to map
+    for (var i = 0; i < transmitters.length; i++) {
+    marker = new L.marker([transmitters[i][1],transmitters[i][2]])
+    .bindPopup(transmitters[i][0])
+    .addTo(map);
+    }
+
+    // zoom map to fit transmitter co-ordinates
+    map.fitBounds([
+    {% for station in station %}
+    {% if station.transmitter.lat is not None %} // doesn't work if any tx locations are missing
+        [{{station.transmitter.lat}},{{station.transmitter.lon}}],
+    {% endif %}
+    {% endfor %}
+    ],
+    {padding: [40, 40]}); // stop transmitters from being cut off at the north edge
+      </script>
+    </div>
+</div>
+{% endblock %}

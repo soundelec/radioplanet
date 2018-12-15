@@ -1,0 +1,103 @@
+{% extends 'shortwave/base.html' %}
+{% load markdownify %}
+{% block title %}Home · Radio Planet{% endblock %}
+{% block pagetitle %}Worldwide short wave frequencies and schedules{% endblock %}
+{% block content %}
+<div class="col-4">
+  <h2>Schedule search</h2>
+  All broadcasts from:
+  <form id="scheduleform" class="scheduleform" onsubmit="scheduleSearch()">
+    <select id="broadcaster" class="broadcaster">
+      <option value="all">All broadcasters</option>
+      {% for broadcaster in broadcaster %}
+        <option value="{{broadcaster.slug}}">{{broadcaster.broadcaster}}</option>
+      {% endfor %}
+    </select><br>
+    In language:<br>
+    <select id="language" class="language">
+      <option value="all">All languages</option>
+      {% for language in language %}
+        <option value="{{language.slug}}">{{language.language}}</option>
+      {% endfor %}
+    </select>
+  </form>
+  At time:<br>
+    <input id="timeinput" class="timeinput" data-time-format="H:i">
+    <button id="setTimeButton" class="timebutton" type="button">Set current time</button>
+  <p></p>
+  <form action="broadcasterselect">
+    <button type="submit" form="scheduleform" value="Submit">Search</button>
+  </form>
+  <!-- This is the JS for the select2 form above -->
+  <script>
+    $('#timeinput').timepicker();
+    $('#setTimeButton').on('click', function (){
+      $('#timeinput').timepicker('setTime', new Date());
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('.broadcaster').select2();
+    });
+    $(document).ready(function() {
+      $('.language').select2();
+    });
+  </script>
+</div>
+<div class="col">
+  {% for page in pages %}
+    {% if page.sortorder == 99 %}
+      <h2>{{page.title}}</h2>
+      <p>{{ page.content | markdownify }}</p>
+    {% endif %}
+  {% endfor %}
+</div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-4">
+    <h2>Current solar data</h2>
+    <table class="solar">
+    	<tbody>
+    		<tr>
+    			<td><strong>SFI</strong></td>
+    			<td>{{solardata.0.solarflux}}</td>
+    		</tr>
+    		<tr>
+    			<td><strong>A index</strong></td>
+    			<td>{{solardata.0.aindex}}</td>
+    		</tr>
+    		<tr>
+    			<td><strong>K index</strong></td>
+    			<td>{{solardata.0.kindex}}</td>
+    		</tr>
+    		<tr>
+    			<td><strong>Sunspot count</strong></td>
+    			<td>{{solardata.0.sunspots}}</td>
+    		</tr>
+    		<tr>
+    			<td><strong>Geomagnetic field</strong></td>
+    			<td>{{solardata.0.geomagfield}}</td>
+    		</tr>
+    		<tr>
+    			<td><strong>Noise floor</strong></td>
+    			<td>{{solardata.0.signalnoise}}</td>
+    		</tr>
+    	</tbody>
+    </table>
+    <small>Last updated: {{solardata.0.datetime|date:'d/m/Y H:i'}} UTC</small><br />
+    <small>Solar data thanks to <a href="http://www.hamqsl.com/solar.html" target="_blank">N0NBH/HamQSL.com</a></small><br />
+  </div>
+  <div class="col-4">
+    <h2>Radio Planet blog</h2>
+    <ul class="blogpost">
+    {% for blogpost in blogposts %}
+    <li><a href="{{blogpost.link}}">{{blogpost.title}}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+  <div class="col">
+    <h2>News from the web</h2>
+    <p>News and blog posts from selected broadcast-related websites.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,146 @@
+body {
+  /* padding-top: 5rem; */
+  background-color: #73808c;
+  font-family: 'Lato', sans-serif;
+}
+
+main {
+  background-color: #fff;
+  text-align: left;
+}
+
+p {
+  font-family: 'Lato', sans-serif;
+}
+
+h1.question {
+  font-family: 'Lora', serif;
+  text-align: center;
+}
+
+input.freq {
+  width: 150px;
+  text-align: center;
+  border: 0;
+  outline: 0;
+  border-bottom: 3px solid black;
+  background-color: #fff;
+}
+
+.fullwidth {
+  background-color: #343a40;
+  color: #fff;
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 10px;
+}
+
+.pagetitle {
+  border-top: 1px solid #555;
+  padding-top: 16px;
+  font-family: 'Lora', serif;
+}
+
+.navbar {
+ min-height: 80px;
+ padding: 0;
+ font-family: 'Lato', sans-serif;
+}
+
+.navbar-brand {
+ height: 80px;
+ line-height: 80px;
+}
+
+.navbar li {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-right: 1px solid #555;
+  height: 80px;
+  line-height: 80px;
+}
+
+h2 {
+  font-family: 'Lato', sans-serif;
+}
+
+select.broadcaster {
+  width: 100%;
+}
+select.language {
+  width: 100%;
+}
+
+.scheduleform {
+  width: 100%;
+}
+
+.select2-container {
+  font-family: 'Lato', sans-serif;
+}
+
+input.timeinput {
+  width: 160px;
+}
+
+.starter-template {
+  padding: 3rem 1.5rem;
+}
+
+.frequencyform {
+  display: inline;
+}
+
+/* Frequency list styling */
+table.frequencies {
+  width: 100%;
+}
+td.tableheader {
+  background: #ddd;
+}
+td.stationrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  border-bottom: 1px dotted #ddd;
+}
+
+/* Styling for days table */
+.daystable {
+  width: 128px;
+}
+
+.fa-check {
+  color: #499b47; /* green tick */
+}
+.fa-times {
+  color: #84262c; /* red cross */
+}
+
+/* Styling for solar data table */
+.solar {
+  width: 100%;
+}
+.blogpost {
+  padding: 0;
+  list-style-type: none;
+}
+
+.stationdetails {
+  width: 100%;
+}
+
+/* Styling for map */
+.txmap {
+  height: 400px;
+  width: 100%;
+}
+.worldmap { /* for schedule and lookup pages */
+  height: 600px;
+  width: 100%;
+}
+
+.footer {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #343a40;
+}

@@ -1,0 +1,10 @@
+{% extends 'shortwave/base.html' %}
+{% load static %}
+{% load markdownify %}
+{% block title %}{{page.title}} · Radio Planet{% endblock %}
+{% block pagetitle %}{{page.title}}{% endblock %}
+{% block content %}
+<div class="col">
+    <p>{{page.content|markdownify}}</p>
+</div>
+{% endblock %}

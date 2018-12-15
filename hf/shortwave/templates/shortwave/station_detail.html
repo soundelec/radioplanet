@@ -1,0 +1,71 @@
+{% extends 'shortwave/base.html' %}
+{% load static %}
+{% block title %}{{station.broadcaster}} · {{station.freq}} kHz · Radio Planet{% endblock %}
+{% block pagetitle %}Details of {{station.broadcaster}} ({{ station.freq }} kHz){% endblock %}
+{% block content %}
+<div class="col-4">
+    <table class="stationdetails">
+  	<tbody>
+  		<tr>
+  			<td><strong>Broadcaster</strong></td>
+  			<td>{{station.broadcaster}}</td>
+  		</tr>
+      <tr>
+  			<td><strong>Website</strong></td>
+  			<td>{% if station.broadcaster.url %}<a href="{{station.broadcaster.url}}" target="_blank">Visit <i class="fa fa-globe" aria-hidden="true"></i></a>{% endif %}</td>
+  		</tr>
+  		<tr>
+  			<td><strong>Frequency</strong></td>
+  			<td>{{station.freq}} kHz</td>
+  		</tr>
+  		<tr>
+  			<td><strong>Times (UTC)</strong></td>
+  			<td>{{station.timeon}}-{{station.timeoff}}</td>
+  		</tr>
+  		<tr>
+  			<td><strong>Site</strong></td>
+  			<td>{{ station.site }}, {{station.site.countryname}} <img src="{% static 'img/flags_iso/'%}{{station.site.iso}}.png"></td>
+  		</tr>
+  		<tr>
+  			<td><strong>Power</strong></td>
+  			<td>{{ station.power }} kW</td>
+  		</tr>
+  		<tr>
+  			<td><strong>Language</strong></td>
+  			<td>{{ station.lang }}</td>
+  		</tr>
+  		<tr>
+  			<td><strong>Days:</strong></td>
+  			<td> </td>
+  		</tr>
+      <tr class="daysrow"><td>Monday</td><td>{% if station.mon %}<i class="fa fa-check" aria-hidden="true"></i>{% else %}<i class="fa fa-times" aria-hidden="true"></i>{% endif %}</td></tr>
+      <tr><td>Tuesday</td><td>{% if station.tue %}<i class="fa fa-check" aria-hidden="true"></i>{% else %}<i class="fa fa-times" aria-hidden="true"></i>{% endif %}</td></tr>
+      <tr><td>Wednesday</td><td>{% if station.wed %}<i class="fa fa-check" aria-hidden="true"></i>{% else %}<i class="fa fa-times" aria-hidden="true"></i>{% endif %}</td></tr>
+      <tr><td>Thursday</td><td>{% if station.thu %}<i class="fa fa-check" aria-hidden="true"></i>{% else %}<i class="fa fa-times" aria-hidden="true"></i>{% endif %}</td></tr>
+      <tr><td>Friday</td><td>{% if station.fri %}<i class="fa fa-check" aria-hidden="true"></i>{% else %}<i class="fa fa-times" aria-hidden="true"></i>{% endif %}</td></tr>
+      <tr><td>Saturday</td><td>{% if station.sat %}<i class="fa fa-check" aria-hidden="true"></i>{% else %}<i class="fa fa-times" aria-hidden="true"></i>{% endif %}</td></tr>
+      <tr><td>Sunday</td><td>{% if station.sun %}<i class="fa fa-check" aria-hidden="true"></i>{% else %}<i class="fa fa-times" aria-hidden="true"></i>{% endif %}</td></tr>
+  	</tbody>
+  </table>
+</div>
+<div class="col">
+  <div class="txmap" id="txmap">
+    <script>
+
+	var mymap = L.map('txmap').setView([{{station.site.lat}}, {{station.site.lon}}], 4);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaW9uYWsiLCJhIjoiY2o1NzJsZHhuMXM3dzJ4cWxiMnBteWkxaSJ9.nJkz62TdDvWDv8CBQboHxg', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+	var marker = L.marker([{{station.site.lat}}, {{station.site.lon}}]).addTo(mymap);
+	marker.bindPopup("<b>{{station.site}}</b><br>{{station.broadcaster}} ({{station.freq}} kHz)").openPopup();
+
+    </script>
+	</div>
+</div>
+{% endblock %}
