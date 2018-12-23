@@ -41,6 +41,23 @@
           frequencyform.action = action_src ;
         }
     </script>
+
+<!-- Matomo -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//stats.soundelec.co.uk/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+
   </head>
 
   <body>
@@ -76,7 +93,7 @@
       <div class="starter-template">
         <h1 class="question">What can I hear on
           <form class="frequencyform" id="frequencyform">
-            <input id="freq" class="freq" onkeypress="frequencySearch()"></input>
+            <input id="freq" class="freq" onkeypress="frequencySearch()" autocomplete="off"></input>
           </form>
             kHz right now?</h1>
         <hr>
